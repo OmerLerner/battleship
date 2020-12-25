@@ -1,38 +1,35 @@
-.App {
+/* Setup Player Ships */
+.displayContent{
   text-align: center;
+  margin-top:5vh;
+  margin-bottom:10vh;
+}
+.displayText{
+  font-size:30px;
+}
+.playerShipSetup {
+  display: grid;
+  width: 540px;
+  height: 520px;
+  margin: auto;
+}
+.tile 
+{
+  border: 2px solid grey;
+  background-color:skyblue;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.validTile
+{
+  background-color:grey;
+  border: 2px solid black;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.invalidTile{
+  background-color: red;
+  cursor: not-allowed;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.selectedTile{
+  background-color:grey;
+  border:2px solid black;
+  cursor: not-allowed;
 }
