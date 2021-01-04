@@ -7,7 +7,7 @@ class Ship{
         this.hits=[];
     }
 
-    hit(index) //May be redundant to keep
+    hit(index) 
     {
         if (this.position.includes(index))
             this.hits.push(index);

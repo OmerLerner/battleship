@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import Grid from "react-css-grid";
 import ship_types from "../helpers/ship_types";
+import player_data from '../helpers/player_data'
+import playerData from "../helpers/player_data";
 
 class SetupPlayerShips extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       playerData: [],
+      playerName: '',
       shipsToPlace: ship_types,
       currentShipIndex: 0,
       currentShipName: ship_types[0].name,
@@ -21,8 +24,10 @@ class SetupPlayerShips extends React.Component {
     this.handleHover = this.handleHover.bind(this);
     this.handleLeave = this.handleLeave.bind(this);
     this.handleClick= this.handleClick.bind(this);
+    this.handlePlayerNameChange = this.handlePlayerNameChange.bind(this);
   }
-
+  handlePlayerNameChange(event) {
+    this.setState({playerName: event.target.value});  }
   changeAxis = () => {
     this.state.axis === "x"
       ? this.setState({ axis: "y" })
@@ -66,45 +71,38 @@ class SetupPlayerShips extends React.Component {
           this.state.shipsToPlace[this.state.currentShipIndex].length >8
       );
   }
+  //return true if there is a collision
   checkForCollision = (axis,index,shipLength) =>{
-      if (axis==='x')
-      {
-          for (let i=1;i<shipLength;i++)
-          {
-              if (this.state.occupiedTiles.contains(index+i))
-                return true;
-          }
-          return false;
-      }
-      else
-        for (let i=1; i<shipLength;i++)
+    // if (this.state.occupiedTiles.length === 0)
+    //   return true;
+    if (axis==='x')
+    {
+        for (let i=1;i<shipLength;i++)
         {
-            if (this.state.occupiesTiles.contains(index+(i*8)))
-                return true;
+          if (this.state.occupiedTiles.includes(parseInt(index)+i))
+            return true;
         }
         return false;
+    }
+    else
+      for (let i=1; i<shipLength;i++)
+      {
+          if (this.state.occupiedTiles.includes(parseInt(index)+(i*8)))
+              return true;
+      }
+      return false;
   }
   validShipPosition = (e, index, axis) => {
-    if (axis === "x") {
-      if (this.checkInvalidShipLocation(axis, index)) {
-        e.target.classList.toggle("invalidTile");
-        this.setState({
-            allowClick:false,
-        }); return;
+      if (!this.checkForCollision(axis,index,this.state.currentShipLength) && !this.checkInvalidShipLocation(axis, index)) {
+        this.handleShipTileSpan(axis);
       } else
-            this.handleShipTileSpan(axis);
-    } else {
-      if (!this.checkForCollision(axis,index) && this.checkInvalidShipLocation(axis, index)) {
-        e.target.classList.toggle("invalidTile");
-        this.setState({
-            allowClick:false,
-        })
-        return;
-      } else {
-            this.handleShipTileSpan(axis);
-      }
-    }
-  };
+        {
+          e.target.classList.toggle("invalidTile");
+          this.setState({
+              allowClick:false,
+          }); return;
+        }
+    } 
 
   handleHover(e) {
     this.setState(
@@ -127,8 +125,26 @@ class SetupPlayerShips extends React.Component {
   handleClick = ()=>{
       if (this.state.allowClick)
       {
-        console.log(this.state.shipsToPlace)
-        this.setState(state=> {
+        if (this.state.shipsToPlace[this.state.currentShipIndex+1] === undefined)
+        {
+          this.setState(state=> {
+            const playerData = state.playerData.concat({
+                shipName:state.currentShipName,
+                shipLocation:state.shipTileSpan,
+            });
+            const currentShipIndex = state.currentShipIndex+1;
+            const occupiedTiles = state.occupiedTiles.concat(state.shipTileSpan);
+            const currentTile = -1;
+            return{
+                playerData,
+                occupiedTiles,
+                currentTile,
+                currentShipIndex,
+            }
+        })
+        }
+        else{
+          this.setState(state=> {
             const playerData = state.playerData.concat({
                 shipName:state.currentShipName,
                 shipLocation:state.shipTileSpan,
@@ -139,7 +155,6 @@ class SetupPlayerShips extends React.Component {
             const currentShipLength = state.shipsToPlace[currentShipIndex].length;
             const currentTile = -1;
             const shipTileSpan = [];
-            console.log(occupiedTiles);
             return{
                 playerData,
                 currentShipIndex,
@@ -150,6 +165,7 @@ class SetupPlayerShips extends React.Component {
                 shipTileSpan,
             }
         })
+        }
       }
       else
         return
@@ -204,6 +220,23 @@ class SetupPlayerShips extends React.Component {
 
   render() {
     return (
+      (this.state.shipsToPlace[this.state.currentShipIndex] === undefined) ?
+      
+      <form className='enterPlayerName' onSubmit={this.props.handleGameStart.bind(
+        this,
+        true,
+        this.state.playerData,
+        this.state.playerName
+        )}>
+        <label className='enterPlayerNameSpan'>Please enter your name</label>
+        <input 
+          type='text' 
+          id='playerNameInput' 
+          value={this.state.playerName}
+          onChange={this.handlePlayerNameChange}></input>
+          <input type="submit" value="Submit" />
+      </form>
+      :
       <div className="displayContainer">
         <div className="displayContent">
           <span className="displayText">{this.state.currentShipIndex}</span>

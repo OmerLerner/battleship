@@ -10,6 +10,7 @@ class Gameboard {
             this.board[i]={
                 hasShip:false,
                 isShot:false,
+                index:i,
     }}};
     placeShip(ship){
         ship.position.forEach(index => {
@@ -17,26 +18,34 @@ class Gameboard {
         });
         this.ships.push(ship);
     };
-    recieveShot(index) //I may combine recieveshot & checkforhit
+    recieveShot(index) 
     {
         this.board[index].isShot=true;
     }
+    //If ship is hit, returns index of the ship in 'ships'. Otherwise, returns -1
     checkForHit(index){
         if (this.board[index].isShot && this.board[index].hasShip){
             for (let i=0;i<this.ships.length;i++){
                 if (this.ships[i].position.includes(index)){
+                    console.log("We got a hit boys!");
                     this.ships[i].hit(index);
-                    this.checkIfSunk(i);
-                    return;
-        }}}
+                    return i;
+                }
+            }
+        }
         else
         {
             this.missedShots.push(index);
+            return -1;
         }
     }
     checkIfSunk(index){
         if(this.ships[index].isSunk())
+        {
             this.ships.splice(index,1);
+            return true;
+        }
+        return false;
     }
     checkIfAllShipsSunk(){
         return (this.ships.length === 0 || this.ships === undefined);

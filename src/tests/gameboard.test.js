@@ -30,7 +30,7 @@ describe('Gameboard functions', () => {
     it ('Missed shot registers on board',()=>{
         testBoard.placeShip(fakeSubmarine);
         testBoard.recieveShot(28);
-        testBoard.checkForHit(28);
+        expect(testBoard.checkForHit(28)).toEqual(-1);
         expect(testBoard.board[28]).toEqual(
             {
                 hasShip:false,
@@ -41,7 +41,7 @@ describe('Gameboard functions', () => {
     it ('Shot registers on board when ship is hit',()=>{
         testBoard.placeShip(fakeSubmarine);
         testBoard.recieveShot(24);
-        testBoard.checkForHit(24);
+        expect(testBoard.checkForHit(24)).toEqual(0);
         expect(testBoard.board[24]).toEqual(
             {
                 hasShip:true,
@@ -53,30 +53,32 @@ describe('Gameboard functions', () => {
         testBoard.placeShip(fakeSubmarine);
         testBoard.placeShip(fakeCruiser);
         testBoard.recieveShot(24);
-        testBoard.checkForHit(24);
+        expect(testBoard.checkForHit(24)).toEqual(0);
         testBoard.recieveShot(25);
-        testBoard.checkForHit(25);
+        expect(testBoard.checkForHit(25)).toEqual(0);
         testBoard.recieveShot(26);
-        testBoard.checkForHit(26);
+        expect(testBoard.checkForHit(26)).toEqual(0);
+        expect(testBoard.checkIfSunk(0)).toBeTruthy();
         expect(testBoard.ships).toEqual([fakeCruiser]);
     });
     it ('Checks if all ships on board sunk',()=>{
         testBoard.placeShip(fakeSubmarine);
         testBoard.recieveShot(24);
-        testBoard.checkForHit(24);
+        expect(testBoard.checkForHit(24)).toEqual(0);
         testBoard.recieveShot(25);
-        testBoard.checkForHit(25);
+        expect(testBoard.checkForHit(25)).toEqual(0);
         testBoard.recieveShot(26);
-        testBoard.checkForHit(26);
+        expect(testBoard.checkForHit(26)).toEqual(0);
+        testBoard.checkIfSunk(0);
         expect(testBoard.checkIfAllShipsSunk()).toBeTruthy();
     });
     it ('Check if board records missed shots',()=>{
         testBoard.recieveShot(2);
-        testBoard.checkForHit(2);
+        expect(testBoard.checkForHit(2)).toEqual(-1);
         testBoard.recieveShot(4);
-        testBoard.checkForHit(4);
+        expect(testBoard.checkForHit(4)).toEqual(-1);
         testBoard.recieveShot(8);
-        testBoard.checkForHit(8);
+        expect(testBoard.checkForHit(8)).toEqual(-1);
         expect(testBoard.missedShots).toEqual([2,4,8]);
 
     })
