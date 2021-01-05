@@ -3,6 +3,7 @@ html{
   background-color:rgb(220, 224, 224);
   color:black;
   --ship-color: rgb(150, 150, 150);
+  --text-background-color:rgb(207, 207, 207);
 }
 
 /* Setup Player Ships */
@@ -21,6 +22,8 @@ html{
   font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
   margin-top:40px;
+  margin-right:10px;
+  margin-left:10px;
 }
 .playerShipSetup {
   display: grid;
@@ -103,7 +106,7 @@ html{
 }
 .displayText{
   font-family: 'Varela Round', sans-serif;
-  background-color:rgb(207, 207, 207);
+  background-color:var(--text-background-color);
   font-size:30px;
   width:600px;
   height:auto;
@@ -159,21 +162,101 @@ html{
 }
 
 .isShot{
-  color:black;
+  color:rgb(194, 49, 49);
   cursor:not-allowed;
 }
 
 .hasMissed{
-  color:rgb(194, 49, 49);
+  color:white;
   cursor:not-allowed;
 }
 .humanBoard{
   cursor:default;
 }
 
+/* Rules Popup */
 
+.modal {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
 
+.modal_content {
+  background-color: var(--text-background-color);
+  font-family: 'Varela Round', sans-serif;
+  margin-top:20px;
+  position: absolute;
+  top: 0%;
+  left: 30%;
+  width: 40%;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid black;
+}
 
+.modalTitle{
+  font-size:32px;
+}
+.gameRules{
+  margin-top:10px;
+  font-size:18px;
+}
 
+.close {
+  color: Black;
+  float: right;
+  font-size:24px;
+}
 
-/* CSS Animations */
+.close:hover {
+  color: cyan;
+  cursor: pointer;
+}
+
+/*Game Over Modal */
+.gameOverModal {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+.gameOverContent {
+  background-color: var(--text-background-color);
+  font-family: 'Varela Round', sans-serif;
+  margin-top:20px;
+  position: absolute;
+  top: 0%;
+  left: 30%;
+  width: 40%;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid black;
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+}
+.playerWinnerModal{
+  background-image:url(./pictures/playerWon.jpeg);
+  min-height:500px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.modalWinnerTitle{
+  margin-top:50px;
+  font-size:40px;
+  color:white;
+  text-align:center;
+}
+.newGameButton{
+  margin-top:20px;
+  height:60px;
+  width:200px;
+  font-size:24px;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  justify-content:flex-end;
+}
+

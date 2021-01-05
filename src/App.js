@@ -1,6 +1,6 @@
 import './App.css';
 import SetupPlayerShips from './components/SetupPlayerShips'
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import GameHandler from './components/GameHandler';
 import Player from './factories/player'
 

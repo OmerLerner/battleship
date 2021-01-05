@@ -172,11 +172,18 @@ function computerTurnGenerator(lastComputerShotIndex,lastComputerShotHit,lastCom
     let indexOfHitShip=humanPlayer.gameboard.checkForHit(targetCoordinate.index);
     //If the shot hit a ship
     if (indexOfHitShip!==-1){
+        //We need to declare shipName here b/c if the ship sunk, it will be removed from ships when we call 'checkIfSunk'
+        let shipName=humanPlayer.gameboard.ships[indexOfHitShip].name;
         if(humanPlayer.gameboard.checkIfSunk(indexOfHitShip)){
             if (humanPlayer.gameboard.checkIfAllShipsSunk())
                 return{
-                    computerWon: true,
-                    displayText: 'Your opponent has won the game!'
+                    gameOver: true,
+                    gameOverMessage: 'Your opponent has won the game!',
+                    index:targetCoordinate.index,
+                    lastShotHit:true,
+                    lastShotSunkShip:true,
+                    direction:targetCoordinate.direction,
+                    displayText:'Your opponent sunk your '+shipName+"!"
                 }
             //Shot sunk a ship, but more are still alive, eventually we will display which ship in 'displayText'
             else
@@ -185,7 +192,7 @@ function computerTurnGenerator(lastComputerShotIndex,lastComputerShotHit,lastCom
                     lastShotHit:true,
                     lastShotSunkShip:true,
                     direction:targetCoordinate.direction,
-                    displayText:'Your opponent sunk your ship!'
+                    displayText:'Your opponent sunk your '+shipName+"!"
                 }
         }
         //Shot hit but did not sink the ship

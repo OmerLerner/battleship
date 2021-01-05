@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Grid from "react-css-grid";
 import ship_types from "../helpers/ship_types";
-import player_data from '../helpers/player_data'
-import playerData from "../helpers/player_data";
+import PopUpRules from "./PopUpRules";
+
 
 class SetupPlayerShips extends React.Component {
   constructor(props) {
@@ -20,12 +20,18 @@ class SetupPlayerShips extends React.Component {
       currentTile: -1,
       shipTileSpan: [],
       occupiedTiles:[],
+      seen:false,
     };
     this.handleHover = this.handleHover.bind(this);
     this.handleLeave = this.handleLeave.bind(this);
     this.handleClick= this.handleClick.bind(this);
     this.handlePlayerNameChange = this.handlePlayerNameChange.bind(this);
   }
+  togglePop = () => {
+    this.setState({
+     seen: !this.state.seen
+    });
+   };
   handlePlayerNameChange(event) {
     this.setState({playerName: event.target.value});  }
   changeAxis = () => {
@@ -247,9 +253,13 @@ class SetupPlayerShips extends React.Component {
           General, place your {this.state.shipsToPlace[this.state.currentShipIndex].name}.
           </span>
           <br />
+          <button className="axisToggle" onClick={this.togglePop}>
+            Rules
+          </button>
           <button className="axisToggle" onClick={this.changeAxis}>
             Axis : {this.state.axis}
           </button>
+          {this.state.seen ? <PopUpRules toggle={this.togglePop} /> : null}
         </div>
         <div className="playerShipSetup">
           <Grid className='playerGrid' width={60} gap={1}>

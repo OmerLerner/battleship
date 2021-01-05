@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Grid from "react-css-grid";
-import ReactDOM from 'react-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes,faBomb, faDivide } from '@fortawesome/free-solid-svg-icons'
+import { faTimes,faBomb} from '@fortawesome/free-solid-svg-icons'
 import computerTurnGenerator from '../helpers/computerTurnGenerator'
+import GameOver from './GameOver'
 
 
 class GameHandler extends React.Component{
@@ -12,6 +12,9 @@ class GameHandler extends React.Component{
         super(props);
         this.state={
             activeTurn:false,
+            gameOver:false,
+            computerWon:false,
+            gameOverMessage:'',
             currentTile:-1,
             displayText:'Awaiting your move...',
             lastComputerShotHit:false,
@@ -24,6 +27,7 @@ class GameHandler extends React.Component{
         this.handleClick = this.handleClick.bind(this);
 
     }
+    
     createBoard = (playerType) => {
         let tileArray = [];
         for (let i = 0; i < 64; i++) {
@@ -100,26 +104,42 @@ class GameHandler extends React.Component{
         );
       };
       handleHover(e) {
-        e.target.classList.toggle('hoverEnemyBoard');
-        this.setState(
-          {
-            currentTile: e.target.attributes.number.value,
-          });
+        if (!this.state.activeTurn){
+            if(!e.target.classList.contains('hoverEnemyBoard'))
+            {
+                e.target.classList.toggle('hoverEnemyBoard');
+                this.setState(
+                {
+                    currentTile: e.target.attributes.number.value,
+                });
+            }
+        }
       }
       handleLeave(e){
-          e.target.classList.toggle('hoverEnemyBoard');
+        if (!this.state.activeTurn){
+            if(e.target.classList.contains('hoverEnemyBoard'))
+            {
+                e.target.classList.toggle('hoverEnemyBoard');
+            }
+        }
       }
       //Used as a delay to simulate enemy turn
       timer = ms => new Promise(res => setTimeout(res, ms))
 
       handleClick(e){
-        this.simulateGameRound(parseInt(e.target.attributes.number.value));
+        if (!this.state.activeTurn)
+            this.simulateGameRound(parseInt(e.target.attributes.number.value));
       }
 
       async simulateGameRound(index){
         //Make sure page renders after this function
+        this.setState({
+            activeTurn:true,
+        })
         let enemyGameboard=this.props.cpuPlayer.gameboard;
         this.handlePlayerTurn(index,enemyGameboard);
+        if (this.state.gameOver)
+            return;
         await this.timer(1000);
         this.setState({
             displayText: 'Your opponent is thinking...'
@@ -132,29 +152,57 @@ class GameHandler extends React.Component{
                 this.state.computerHitDirection,
                 this.props.humanPlayer,
         )
-        console.log(computerTurn);
-        this.setState({
-            lastComputerShotIndex:computerTurn.index,
-            lastComputerShotHit:computerTurn.lastShotHit,
-            lastComputerShotSunkShip:computerTurn.lastShotSunkShip,
-            computerHitDirection:computerTurn.direction,
-            displayText:computerTurn.displayText,
-        })
-        await this.timer(1500);
-        this.setState({
-            displayText:'Awaiting your move...'
-        })
+        if (computerTurn.gameOver)
+        {
+            this.setState({
+                lastComputerShotIndex:computerTurn.index,
+                lastComputerShotHit:computerTurn.lastShotHit,
+                lastComputerShotSunkShip:computerTurn.lastShotSunkShip,
+                computerHitDirection:computerTurn.direction,
+                displayText:computerTurn.displayText,
+                gameOver:true,
+                gameOverMessage:computerTurn.gameOverMessage,
+                computerWon:true,
+            })
+        }
+        else{
+            this.setState({
+                lastComputerShotIndex:computerTurn.index,
+                lastComputerShotHit:computerTurn.lastShotHit,
+                lastComputerShotSunkShip:computerTurn.lastShotSunkShip,
+                computerHitDirection:computerTurn.direction,
+                displayText:computerTurn.displayText,
+            })
+            await this.timer(1500);
+            this.setState({
+                displayText:'Awaiting your move...',
+                activeTurn:false
+            })
+        }
+        
       }
       handlePlayerTurn(index,enemyGameboard){
         enemyGameboard.board[index].isShot=true;
         let indexOfShotShip = enemyGameboard.checkForHit(index);
         if (indexOfShotShip!==-1){
+            let shipName=enemyGameboard.ships[indexOfShotShip].name;
             if (enemyGameboard.checkIfSunk(indexOfShotShip)){
-                //Animated sinking ship on board//
-                this.setState({
-                    displayText:'You shot and sunk a ship!',
-                });
-                return true;
+                if (enemyGameboard.checkIfAllShipsSunk())
+                {
+                    this.setState({
+                        gameOver:true,
+                        gameOverMessage:'Game Over! You beat the opponent!',
+                        displayText:"You sunk your opponent's "+shipName+"!",
+                    })
+                    return true;
+                }
+                else
+                {
+                    this.setState({
+                        displayText:"You sunk your opponent's "+shipName+"!",
+                    });
+                    return true;  
+                }
             }
             else{
                 //displayHitOnGameboard
@@ -181,6 +229,10 @@ class GameHandler extends React.Component{
                     <br/>
                     <span className='displayText'>{this.state.displayText}</span>
                 </div>
+                {this.state.gameOver ? 
+                    <GameOver 
+                        message={this.state.gameOverMessage}
+                        computerWon={this.state.computerWon} /> : null}
                 <div className='gameboardsContainer'>
                     <div className="playerBoard">
                         <span className='boardHeader'>{this.props.humanPlayer.name}</span>
