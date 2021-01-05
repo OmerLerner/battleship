@@ -37,19 +37,19 @@ function computerTurnGenerator(lastComputerShotIndex,lastComputerShotHit,lastCom
                         let index=indexOfHitShip+i;
                         if (!ship.hits.includes(ship.position[index])){
                             return generateDirectionBasedOffCoordinates(lastHitOnShip,ship.position[index]);
-                            }
+                        }
                     }
                     if (indexOfHitShip-i>-1){
                         let index=indexOfHitShip-i;
                         if (!ship.hits.includes(ship.position[index])){
                             return generateDirectionBasedOffCoordinates(lastHitOnShip,ship.position[index]);
-                            }
+                        }
                     }
                     i++;
                 }
-                
             }
         }
+        //If the function decides to fail for whatever reason
         return generateRandomCoordinate();
 
     }
@@ -97,8 +97,6 @@ function computerTurnGenerator(lastComputerShotIndex,lastComputerShotHit,lastCom
             direction=generateRandomDirection();
         }
         return generateRandomCoordinate();
-   
-
     }
     const generateRandomDirection=()=>{
         let randomIndex = Math.floor(Math.random() * 4);
@@ -117,31 +115,34 @@ function computerTurnGenerator(lastComputerShotIndex,lastComputerShotHit,lastCom
                 direction='down';
                 break;
             default:
-                direction='Something bad happened';
+                direction='Generate random direction failed';
                 break;
         }
         return direction;
     }
-    //Assume index is the last index that registered a hit, and we assume the ship is spanned across 'direction'
+    //Index is the last index that registered a hit, and we assume the ship is spanned across 'direction'
     const calculateLegalMove = (index,direction)=>{
         let humanBoardArray = humanPlayer.gameboard.board;
         if (direction==='left' && (index -1)%8 !==7 && index-1>-1 && !humanBoardArray[index -1].isShot)
             return {
                 index: index-1,
-                direction: 'left'}
+                direction: 'left'
+                }
         if (direction==='right' && (index +1)%8 !==0 && index+1<64 && !humanBoardArray[index +1].isShot)
             return {
                 index: index+1,
-                direction: 'right'}
+                direction: 'right'
+                }
         if (direction==='up' && (index -8)>=0 && index-8>-1 && !humanBoardArray[index-8].isShot)
             return {
                 index: index-8,
-                direction: 'up'}
+                direction: 'up'
+                }
         if (direction==='down' && (index +8)<=63 && index+8<64 && !humanBoardArray[index+8].isShot)
             return {
                 index: index+8,
                 direction: 'down'
-            }
+                }
         return null;
       }
     const generateRandomCoordinate=()=>{
@@ -149,8 +150,9 @@ function computerTurnGenerator(lastComputerShotIndex,lastComputerShotHit,lastCom
         let randomIndex = Math.floor(Math.random() * availableTiles.length);
         return {
             index: availableTiles[randomIndex].index,
-            direction: ''
+            direction: '',
     }}
+
     //Main function
     let targetCoordinate;
     //If the last shot hit a ship but didn't sink it yet
@@ -205,6 +207,7 @@ function computerTurnGenerator(lastComputerShotIndex,lastComputerShotHit,lastCom
             direction:targetCoordinate.direction,
             displayText:'Your opponent missed your ship!'
         }
+    
     
 }
 

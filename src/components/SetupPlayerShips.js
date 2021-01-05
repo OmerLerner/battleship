@@ -228,25 +228,31 @@ class SetupPlayerShips extends React.Component {
         this.state.playerData,
         this.state.playerName
         )}>
-        <label className='enterPlayerNameSpan'>Please enter your name</label>
+        <label className='enterPlayerNameSpan'>Enter your name</label>
         <input 
           type='text' 
-          id='playerNameInput' 
+          className='playerNameInput' 
           value={this.state.playerName}
           onChange={this.handlePlayerNameChange}></input>
-          <input type="submit" value="Submit" />
+        <input 
+          type="submit" 
+          className='submitButton'
+          value="Start Game" />
       </form>
       :
       <div className="displayContainer">
+        <span className='title'>BATTLESHIP</span>
         <div className="displayContent">
-          <span className="displayText">{this.state.currentShipIndex}</span>
+          <span className="displayText">
+          General, place your {this.state.shipsToPlace[this.state.currentShipIndex].name}.
+          </span>
           <br />
           <button className="axisToggle" onClick={this.changeAxis}>
             Axis : {this.state.axis}
           </button>
         </div>
         <div className="playerShipSetup">
-          <Grid width={60} gap={1}>
+          <Grid className='playerGrid' width={60} gap={1}>
             {this.createBoard()}
           </Grid>
         </div>

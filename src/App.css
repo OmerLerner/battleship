@@ -1,45 +1,132 @@
+
+html{
+  background-color:rgb(220, 224, 224);
+  color:black;
+  --ship-color: rgb(150, 150, 150);
+}
+
 /* Setup Player Ships */
+.displayContainer{
+  text-align:center;
+}
 .displayContent{
   text-align: center;
   margin-top:5vh;
-  margin-bottom:10vh;
+  margin-bottom:3vh;
 }
-.displayText{
-  font-size:30px;
+.axisToggle{
+  height:30px;
+  min-width:85px;
+  font-size:15px;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  margin-top:40px;
 }
 .playerShipSetup {
   display: grid;
   width: 540px;
   height: 520px;
-  margin: auto;
+  /* margin: auto; */
+  margin-left:auto;
+  margin-right:auto;
+}
+.playerGrid{
+  padding-bottom:20px;
 }
 .tile 
 {
   border: 2px solid grey;
-  background-color:skyblue;
+  background-color:rgb(56, 157, 197);
 }
 
 .validTile
 {
-  background-color:grey;
+  background-color:var(--ship-color);
   border: 2px solid black;
 }
 .invalidTile{
-  background-color: red;
+  background-color: rgb(214, 44, 44);
   cursor: not-allowed;
 }
 .selectedTile{
-  background-color:grey;
+  background-color:var(--ship-color);
   border:2px solid black;
   cursor: not-allowed;
 }
+.enterPlayerName{
+  text-align:center;
+  align-items: center;
+  display:flex;
+  flex-direction: column;
+}
+.enterPlayerNameSpan{
+  font-size:50px;
+  font-family: 'Oswald', sans-serif;
+  margin-top:20px;
+  margin-bottom:20px;
+}
+.playerNameInput{
+  width:20vw;
+  height:6.5vh;
+  font-size:5vh;
+  font-family: 'Oswald', sans-serif;
+  border: 2px solid grey;
+  border-radius: 8px;
+  text-align: center;
+}
+.submitButton{
+  margin-top:20px;
+  height:60px;
+  width:200px;
+  font-size:24px;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+}
 
 /* Gameboards */
+.gameHeader{
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  margin-top:5px;
+  margin-bottom:20px;
+}
+.title{
+  font-size:60px;
+  font-family: 'Oswald', sans-serif;
+  color:black;
+}
+
 .gameboardsContainer{
   display:flex;
   align-content:space-between;
 }
-
+.displayText{
+  font-family: 'Varela Round', sans-serif;
+  background-color:rgb(207, 207, 207);
+  font-size:30px;
+  width:600px;
+  height:auto;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:30px;
+  padding-right:30px;
+  padding-top:10px;
+  padding-bottom:10px;
+  border-radius: 12px;
+  border: 2px solid grey;
+}
+.boardHeader{
+  font-size:32px;
+  color:white;
+  text-align:center;
+  font-family: 'Oswald', sans-serif;
+  padding-top:5px;
+  padding-bottom:10px;
+  margin-bottom:5px;
+  text-transform: uppercase;
+  background-color: rgba(22, 22, 22, 0.9);
+}
 .playerBoard, .computerBoard {
   display: grid;
   width: 540px;
@@ -47,14 +134,44 @@
   margin: auto;
 }
 
+
+.gameboardTile{
+  font-size: 40px;
+  line-height: 60px;
+  border: 2px solid grey;
+  background-color:rgb(56, 157, 197);
+  color:white;
+  width: 62.6px;
+  height: 62px;
+  text-align: center;
+  vertical-align: bottom;
+  cursor: crosshair;
+}
 .hoverEnemyBoard{
   cursor: crosshair;
-  background-color:rgba(135,206,238,0.8);
+  background-color:skyblue;
+  border: 2px solid rgb(0, 0, 0);
   box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
 }
-.times{
-  transform: translateY(-4%);
+
+.hasShip{
+  background-color:var(--ship-color);
 }
+
+.isShot{
+  color:black;
+  cursor:not-allowed;
+}
+
+.hasMissed{
+  color:rgb(194, 49, 49);
+  cursor:not-allowed;
+}
+.humanBoard{
+  cursor:default;
+}
+
+
 
 
 

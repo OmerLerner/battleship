@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Grid from "react-css-grid";
+import ReactDOM from 'react-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faTimes,faBomb, faDivide } from '@fortawesome/free-solid-svg-icons'
 import computerTurnGenerator from '../helpers/computerTurnGenerator'
 
 
@@ -10,8 +11,9 @@ class GameHandler extends React.Component{
     {
         super(props);
         this.state={
+            activeTurn:false,
             currentTile:-1,
-            displayText:'',
+            displayText:'Awaiting your move...',
             lastComputerShotHit:false,
             lastComputerShotSunkShip:false,
             computerHitDirection:'',
@@ -35,14 +37,26 @@ class GameHandler extends React.Component{
     occupyComputerTiles = (tileArray) => {
         return tileArray.map((number) => (
             this.props.cpuPlayer.gameboard.board[number].isShot ?(
-                <div
-                //Create a css class that changes cursor when you want to click//
-                    className="tile"
+                this.props.cpuPlayer.gameboard.board[number].hasShip? (
+                    <div
+                    //Shot a ship tile//
+                    className="gameboardTile hasShip isShot"
                     number={number}
                     id={number}>
-                    </div>):(
+                        <FontAwesomeIcon icon={faBomb} />
+                    </div>
+                    ):(
+                    <div
+                    //Missed hit tile//
+                    className="gameboardTile hasMissed"
+                    number={number}
+                    id={number}>
+                        <FontAwesomeIcon icon={faTimes} />
+                    </div>
+                    )
+                ):(
                 <div
-                    className="tile"
+                    className="gameboardTile"
                     onMouseOver={this.handleHover}
                     onMouseLeave={this.handleLeave}
                     onClick={this.handleClick}
@@ -53,11 +67,36 @@ class GameHandler extends React.Component{
       };
       occupyHumanTiles = (tileArray) => {
         return tileArray.map((number) => (
-                <div
-                    className="tile"
+            this.props.humanPlayer.gameboard.board[number].hasShip ?(
+                this.props.humanPlayer.gameboard.board[number].isShot ? (
+                    //can change selectedTile to something else
+                    <div
+                    className="gameboardTile hasShip isShot humanBoard"
                     number={number}
-                    id={number}
-          ></div>)
+                    id={number}>
+                       <FontAwesomeIcon icon={faBomb} /> 
+                    </div>
+                ):(
+                    <div
+                    className="gameboardTile hasShip humanBoard"
+                    number={number}
+                    id={number}/> 
+                )
+            ):(this.props.humanPlayer.gameboard.board[number].isShot ? (
+                <div
+                    className="gameboardTile hasMissed humanBoard"
+                    number={number}
+                    id={number}>
+                       <FontAwesomeIcon 
+                       icon={faTimes} /> 
+                    </div>
+                ):(
+                    <div
+                    className="gameboardTile humanBoard"
+                    number={number}
+                    id={number}/> 
+            ))
+            )
         );
       };
       handleHover(e) {
@@ -70,24 +109,29 @@ class GameHandler extends React.Component{
       handleLeave(e){
           e.target.classList.toggle('hoverEnemyBoard');
       }
+      //Used as a delay to simulate enemy turn
+      timer = ms => new Promise(res => setTimeout(res, ms))
+
       handleClick(e){
+        this.simulateGameRound(parseInt(e.target.attributes.number.value));
+      }
+
+      async simulateGameRound(index){
         //Make sure page renders after this function
-        let index=parseInt(e.target.attributes.number.value);
         let enemyGameboard=this.props.cpuPlayer.gameboard;
-        let shotResult = this.handlePlayerTurn(index,enemyGameboard);
-        //Add css classes here to toggle
-        if (shotResult)
-            e.target.style.backgroundColor = 'red';
-        else
-            e.target.style.backgroundColor = 'green';
-        setTimeout(() => {  console.log("Generating computer turn"); }, 1000);
-        let computerTurn=computerTurnGenerator(
-            this.state.lastComputerShotIndex,
-            this.state.lastComputerShotHit,
-            this.state.lastComputerShotSunkShip,
-            this.state.computerHitDirection,
-            this.props.humanPlayer,
-        );
+        this.handlePlayerTurn(index,enemyGameboard);
+        await this.timer(1000);
+        this.setState({
+            displayText: 'Your opponent is thinking...'
+        })
+        await this.timer(1250);
+        let computerTurn = computerTurnGenerator(
+                this.state.lastComputerShotIndex,
+                this.state.lastComputerShotHit,
+                this.state.lastComputerShotSunkShip,
+                this.state.computerHitDirection,
+                this.props.humanPlayer,
+        )
         console.log(computerTurn);
         this.setState({
             lastComputerShotIndex:computerTurn.index,
@@ -95,6 +139,10 @@ class GameHandler extends React.Component{
             lastComputerShotSunkShip:computerTurn.lastShotSunkShip,
             computerHitDirection:computerTurn.direction,
             displayText:computerTurn.displayText,
+        })
+        await this.timer(1500);
+        this.setState({
+            displayText:'Awaiting your move...'
         })
       }
       handlePlayerTurn(index,enemyGameboard){
@@ -129,16 +177,20 @@ class GameHandler extends React.Component{
         return(
             <div className='gameContainer'>
                 <div className='gameHeader'>
-                    <span className='headerDisplayText'>{this.state.displayText}</span>
+                    <span className='title'>BATTLESHIP</span>
+                    <br/>
+                    <span className='displayText'>{this.state.displayText}</span>
                 </div>
                 <div className='gameboardsContainer'>
                     <div className="playerBoard">
-                        <Grid width={60} gap={1}>
+                        <span className='boardHeader'>{this.props.humanPlayer.name}</span>
+                        <Grid width={60} height={60} gap={1}>
                             {this.createBoard('human')}
                         </Grid>
                     </div>
                     <div className="computerBoard">
-                        <Grid width={60} gap={1}>
+                        <span className='boardHeader'>Enemy Waters</span>
+                        <Grid width={60} height={60} gap={1}>
                             {this.createBoard('cpu')}
                         </Grid>
                     </div>
