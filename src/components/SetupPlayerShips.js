@@ -228,7 +228,7 @@ class SetupPlayerShips extends React.Component {
     return (
       (this.state.shipsToPlace[this.state.currentShipIndex] === undefined) ?
       
-      <form className='enterPlayerName' onSubmit={this.props.handleGameStart.bind(
+      <form className='enterPlayerName flip-in-hor-top' onSubmit={this.props.handleGameStart.bind(
         this,
         true,
         this.state.playerData,
@@ -250,7 +250,7 @@ class SetupPlayerShips extends React.Component {
         <span className='title'>BATTLESHIP</span>
         <div className="displayContent">
           <span className="displayText">
-          General, place your {this.state.shipsToPlace[this.state.currentShipIndex].name}.
+          Captain, place your {this.state.shipsToPlace[this.state.currentShipIndex].name}.
           </span>
           <br />
           <button className="axisToggle" onClick={this.togglePop}>

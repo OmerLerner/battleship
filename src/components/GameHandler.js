@@ -138,9 +138,9 @@ class GameHandler extends React.Component{
         })
         let enemyGameboard=this.props.cpuPlayer.gameboard;
         this.handlePlayerTurn(index,enemyGameboard);
+        await this.timer(1000);
         if (this.state.gameOver)
             return;
-        await this.timer(1000);
         this.setState({
             displayText: 'Your opponent is thinking...'
         })
@@ -223,7 +223,7 @@ class GameHandler extends React.Component{
       }
     render(){
         return(
-            <div className='gameContainer'>
+            <div className='gameContainer fade-in'>
                 <div className='gameHeader'>
                     <span className='title'>BATTLESHIP</span>
                     <br/>
