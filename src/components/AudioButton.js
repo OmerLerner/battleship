@@ -8,7 +8,7 @@ function AudioButton() {
         const audio= document.querySelector("audio");
         console.log(audio);
         if (audio.paused) {
-            audio.volume = 0.1;
+            audio.volume = 0.2;
             audio.play();
             setMuteToggle(false);      
         } 
