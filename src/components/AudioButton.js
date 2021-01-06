@@ -25,7 +25,7 @@ function AudioButton() {
             {/* <source src="https://docs.google.com/uc?export=download&id=19EeVeupWVUwPUyP7iK3OM14Iz1YBaJuf"/> */}
        {/* </audio> */}
             <button className="musicButton" onClick={toggleMusic}>
-                {muteToggle ? (<FontAwesomeIcon icon={faVolumeUp} />) : <FontAwesomeIcon icon={faVolumeMute} />}
+                {!muteToggle ? (<FontAwesomeIcon icon={faVolumeUp} />) : <FontAwesomeIcon icon={faVolumeMute} />}
             </button>
      </div>
     );

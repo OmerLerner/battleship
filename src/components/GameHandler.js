@@ -45,7 +45,6 @@ class GameHandler extends React.Component{
                     <div
                     //Shot a ship tile//
                     className="gameboardTile hasShip isShot"
-                    number={number}
                     id={number}>
                         <FontAwesomeIcon icon={faBomb} />
                     </div>
@@ -53,7 +52,6 @@ class GameHandler extends React.Component{
                     <div
                     //Missed hit tile//
                     className="gameboardTile hasMissed"
-                    number={number}
                     id={number}>
                         <FontAwesomeIcon icon={faTimes} />
                     </div>
@@ -64,7 +62,6 @@ class GameHandler extends React.Component{
                     onMouseOver={this.handleHover}
                     onMouseLeave={this.handleLeave}
                     onClick={this.handleClick}
-                    number={number}
                     id={number}
                 ></div>)
         ));
@@ -76,20 +73,17 @@ class GameHandler extends React.Component{
                     //can change selectedTile to something else
                     <div
                     className="gameboardTile hasShip isShot humanBoard"
-                    number={number}
                     id={number}>
                        <FontAwesomeIcon icon={faBomb} /> 
                     </div>
                 ):(
                     <div
                     className="gameboardTile hasShip humanBoard"
-                    number={number}
                     id={number}/> 
                 )
             ):(this.props.humanPlayer.gameboard.board[number].isShot ? (
                 <div
                     className="gameboardTile hasMissed humanBoard"
-                    number={number}
                     id={number}>
                        <FontAwesomeIcon 
                        icon={faTimes} /> 
@@ -97,7 +91,6 @@ class GameHandler extends React.Component{
                 ):(
                     <div
                     className="gameboardTile humanBoard"
-                    number={number}
                     id={number}/> 
             ))
             )
@@ -110,7 +103,7 @@ class GameHandler extends React.Component{
                 e.target.classList.toggle('hoverEnemyBoard');
                 this.setState(
                 {
-                    currentTile: e.target.attributes.number.value,
+                    currentTile: e.target.attributes.id.value,
                 });
             }
         }
@@ -128,7 +121,7 @@ class GameHandler extends React.Component{
 
       handleClick(e){
         if (!this.state.activeTurn)
-            this.simulateGameRound(parseInt(e.target.attributes.number.value));
+            this.simulateGameRound(parseInt(e.target.attributes.id.value));
       }
 
       async simulateGameRound(index){
@@ -138,13 +131,13 @@ class GameHandler extends React.Component{
         })
         let enemyGameboard=this.props.cpuPlayer.gameboard;
         this.handlePlayerTurn(index,enemyGameboard);
-        await this.timer(1000);
+        await this.timer(1300);
         if (this.state.gameOver)
             return;
         this.setState({
             displayText: 'Your opponent is thinking...'
         })
-        await this.timer(1250);
+        await this.timer(1300);
         let computerTurn = computerTurnGenerator(
                 this.state.lastComputerShotIndex,
                 this.state.lastComputerShotHit,
@@ -173,11 +166,12 @@ class GameHandler extends React.Component{
                 computerHitDirection:computerTurn.direction,
                 displayText:computerTurn.displayText,
             })
-            await this.timer(1500);
+            await this.timer(1300);
             this.setState({
                 displayText:'Awaiting your move...',
                 activeTurn:false
             })
+            await this.timer(100);
         }
         
       }

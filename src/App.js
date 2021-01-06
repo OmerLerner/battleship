@@ -25,12 +25,6 @@ function App() {
         initHumanPlayer(new Player(playerName,inputData));
       }
       initCPUPlayer(new Player('CPU'));
-
-      // setPlayerData(inputData);
-      // if (playerName === '')
-      //   setPlayerName('Bill Nye the Science Guy');
-      // else
-      //   setPlayerName(playerName);
     }
     return null;
 

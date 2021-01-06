@@ -163,7 +163,7 @@ html{
 }
 
 .isShot{
-  color:rgb(182, 17, 17);
+  color:rgb(221, 19, 19);
   cursor:not-allowed;
 }
 
@@ -357,7 +357,7 @@ button.fade:hover {
 }
 
 .fade {
-  opacity: 0.2;
+  opacity: 0.4;
   top: 0;
   left: 0;
   transform: translate(0, 0);

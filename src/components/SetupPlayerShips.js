@@ -52,7 +52,6 @@ class SetupPlayerShips extends React.Component {
         this.state.occupiedTiles.includes(number)?(
             <div
                 className="tile selectedTile"
-                number={number}
                 id={number}
       ></div>):(
             <div
@@ -60,7 +59,6 @@ class SetupPlayerShips extends React.Component {
                 onMouseOver={this.handleHover}
                 onMouseLeave={this.handleLeave}
                 onClick={this.handleClick}
-                number={number}
                 id={number}
             ></div>)
     ));
@@ -113,12 +111,12 @@ class SetupPlayerShips extends React.Component {
   handleHover(e) {
     this.setState(
       {
-        currentTile: e.target.attributes.number.value,
+        currentTile: e.target.attributes.id.value,
       },
       () =>
         this.validShipPosition(
           e,
-          e.target.attributes.number.value,
+          e.target.attributes.id.value,
           this.state.axis
         )
     );
