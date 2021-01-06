@@ -3,6 +3,7 @@ import SetupPlayerShips from './components/SetupPlayerShips'
 import React, {useState} from 'react';
 import GameHandler from './components/GameHandler';
 import Player from './factories/player'
+import AudioButton from './components/AudioButton'
 
 
 
@@ -38,18 +39,17 @@ function App() {
 
   
   return (
-    gameStart ? 
     <div className='App'>
-      <GameHandler
-        humanPlayer={humanPlayer}
-        cpuPlayer={cpuPlayer}>
-      </GameHandler>
-    </div>
-    :
-    <div className="App">
-      <SetupPlayerShips
-        handleGameStart={handleGameStart}>
-      </SetupPlayerShips>
+      <AudioButton/>{
+      gameStart ? 
+        <GameHandler
+          humanPlayer={humanPlayer}
+          cpuPlayer={cpuPlayer}>
+        </GameHandler>
+      :
+        <SetupPlayerShips
+          handleGameStart={handleGameStart}>
+        </SetupPlayerShips>}
     </div>
   );
 }

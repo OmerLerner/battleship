@@ -95,6 +95,7 @@ html{
   margin-bottom:20px;
 }
 .title{
+  display:inline-block;
   font-size:60px;
   font-family: 'Oswald', sans-serif;
   color:black;
@@ -211,7 +212,7 @@ html{
 }
 
 .close:hover {
-  color: cyan;
+  color: rgb(56, 157, 197);
   cursor: pointer;
 }
 
@@ -326,5 +327,40 @@ html{
   }
 }
 
+
+/* Audio Button */
+audio {
+  display: none;
+}
+.musicButton {
+  z-index:2;
+  font-size: 16px;
+  color: #eee;
+  position: absolute;
+  top: 5%;
+  left: 34%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  padding: 15px;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+  background: rgba(56, 157, 197, 0.8);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  opacity: 0.8;
+  cursor: pointer;
+  transition: all 0.4s ease-out;
+}
+
+button.fade:hover {
+  opacity: 0.8;
+}
+
+.fade {
+  opacity: 0.2;
+  top: 0;
+  left: 0;
+  transform: translate(0, 0);
+}
 
 
