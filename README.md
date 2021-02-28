@@ -1,4 +1,4 @@
-# Where's Waldo?
+# Battleship
 
 A Battleship game implementation, using Test-Driven Development & asynchronous programming.
 
