@@ -16,7 +16,6 @@ __Github Pages__ - https://omerlerner.github.io/battleship/
 
 ## To-do
 
-* __Improve AI decision making (potentially using a minmax algorithm if the runtime isn't high)__
 
 * __Add additional game options (map with random obstacles/Blitz Battleship)__
 
